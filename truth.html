@@ -65,6 +65,15 @@
   .navlinks a.current{color:var(--ink); border-color:var(--ochre);}
   .navlinks a:focus-visible, a:focus-visible, button:focus-visible{outline:2px solid var(--ochre); outline-offset:3px;}
 
+  .nav-toggle{
+    display:none;
+    background:none; border:1px solid var(--line); border-radius:6px;
+    width:38px; height:38px;
+    align-items:center; justify-content:center;
+    cursor:pointer; color:var(--ink); flex-shrink:0;
+  }
+  .nav-toggle svg{width:18px; height:18px;}
+
   /* ---------- HERO ---------- */
   .hero{
     background:
@@ -221,7 +230,17 @@
     .verdict-grid{grid-template-columns:1fr;}
     .ledger-row{grid-template-columns:1fr; gap:8px;}
     .spectrum-point{width:90px; font-size:10px;}
-    .navlinks{display:none;}
+    .navlinks{
+      display:none;
+      position:absolute; top:100%; left:0; right:0;
+      flex-direction:column; gap:0;
+      background:var(--paper);
+      border-bottom:1px solid var(--line);
+      padding:8px 32px 16px;
+    }
+    .navlinks.open{display:flex;}
+    .navlinks a{padding:14px 4px; border-bottom:1px solid var(--line);}
+    .nav-toggle{display:flex;}
     .verdict-final{padding:32px 24px;}
   }
 
@@ -239,12 +258,15 @@
       <img class="mark" src="logo.png" alt="Site logo">
       Students For Sabah Wildlife
     </div>
-    <div class="navlinks">
+    <div class="navlinks" id="navLinks">
       <a href="index.html">Home</a>
       <a href="truth.html" class="current">The Truth</a>
       <a href="index.html#permits">Getting Permitted</a>
       <a href="index.html#resources">Resources</a>
     </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
   </div>
 </nav>
 
@@ -416,6 +438,25 @@
     <div class="fine">This page presents commonly made arguments on both sides for awareness purposes. It is not a substitute for species-specific research or professional guidance before acquiring any animal.</div>
   </div>
 </footer>
+
+<script>
+  (function(){
+    var btn = document.getElementById('navToggle');
+    var links = document.getElementById('navLinks');
+    if(btn && links){
+      btn.addEventListener('click', function(){
+        var isOpen = links.classList.toggle('open');
+        btn.setAttribute('aria-expanded', isOpen);
+      });
+      links.querySelectorAll('a').forEach(function(a){
+        a.addEventListener('click', function(){
+          links.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+  })();
+</script>
 
 </body>
 </html>
